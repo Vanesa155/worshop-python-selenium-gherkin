@@ -12,6 +12,12 @@ def before_scenario(context, scenario):
     options.add_argument("--disable-popup-blocking")
     options.add_argument("--disable-infobars")
     options.add_argument("--disable-notifications")
+
+    options.add_argument('--no-sandbox')
+    options.add_argument('--headless')  # si no necesitas UI
+    options.add_argument('--disable-dev-shm-usage')  # ayuda a evitar errores por memoria compartida
+
+    
     options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
     options.add_experimental_option("prefs", {
         "credentials_enable_service": False,
