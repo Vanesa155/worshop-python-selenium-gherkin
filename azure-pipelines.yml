@@ -10,7 +10,7 @@ variables:
 steps:
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.11'  # O la versión de Python que uses
+    versionSpec: '3.13'  # O la versión de Python que uses
     addToPath: true
 
 - script: |
