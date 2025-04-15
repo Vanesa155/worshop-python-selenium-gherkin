@@ -1,0 +1,40 @@
+trigger:
+- main  # o la rama que quieras usar
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  CHROMEDRIVER_VERSION: 'latest'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.11'  # O la versión de Python que uses
+    addToPath: true
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install behave selenium
+  displayName: 'Install Python dependencies'
+
+- script: |
+    sudo apt-get update
+    sudo apt-get install -y wget unzip xvfb libxi6 libgconf-2-4
+
+    # Install Google Chrome
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    sudo apt install -y ./google-chrome-stable_current_amd64.deb
+
+    # Install Chromedriver
+    CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -1)
+    wget https://chromedriver.storage.googleapis.com/$CHROME_VERSION/chromedriver_linux64.zip || true
+    unzip chromedriver_linux64.zip || true
+    sudo mv chromedriver /usr/local/bin/
+    sudo chmod +x /usr/local/bin/chromedriver
+  displayName: 'Install Chrome and Chromedriver'
+
+- script: |
+    echo "Running tests with XVFB..."
+    xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24' behave
+  displayName: 'Run behave tests with xvfb'

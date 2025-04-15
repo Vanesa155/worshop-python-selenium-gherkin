@@ -13,3 +13,4 @@ Feature: Login Feature
     Given the user is on the login page
     When the user logs in with empty credentials
     Then an error message should be displayed
+
