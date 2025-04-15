@@ -52,6 +52,6 @@ jobs:
 
     - name: Run Behave tests
       run: |
-        xvfb-run behave
+        behave
         
 
