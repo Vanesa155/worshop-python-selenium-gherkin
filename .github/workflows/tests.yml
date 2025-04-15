@@ -34,14 +34,14 @@ jobs:
     - name: Install Chromedriver
       run: |
         CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -1)
-        CHROMEDRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json" \
-          | jq -r --arg ver "$CHROME_VERSION" '.channels.Stable.version as $v | .channels.Stable.downloads.chromedriver[] | select(.platform == "linux64") | .url' \
-          | head -1)
-        
-        wget -O chromedriver_linux64.zip "$CHROMEDRIVER_VERSION"
+        CHROMEDRIVER_URL=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json" \
+          | jq -r --arg ver "$CHROME_VERSION" '.channels.Stable.downloads.chromedriver[] | select(.platform == "linux64") | .url' | head -1)
+
+        wget -O chromedriver_linux64.zip "$CHROMEDRIVER_URL"
         unzip -o chromedriver_linux64.zip
-        chmod +x chromedriver
-        sudo mv -f chromedriver /usr/local/bin/chromedriver
+        chmod +x chromedriver-linux64/chromedriver
+        sudo mv -f chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
+
 
 
     - name: Run Behave tests
