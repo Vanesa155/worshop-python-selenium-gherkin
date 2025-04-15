@@ -42,10 +42,16 @@ jobs:
         chmod +x chromedriver-linux64/chromedriver
         sudo mv -f chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
 
+    - name: Install dependencies 
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget unzip xvfb libxi6 jq
+
+
 
 
     - name: Run Behave tests
       run: |
         xvfb-run behave
-        sudo apt-get install -y jq
+        
 
